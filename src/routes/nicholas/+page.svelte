@@ -13,7 +13,7 @@
 </script>
 
 <main>
-	<h1>Welcome to the Cookie Clicker 2.0</h1>
+	<h1>Welcome to the Cookie Clicker 2.0.1</h1>
 	<p class="gold-text">Cookies: {count}</p>
 	<!-- Displays counter -->
 </main>
