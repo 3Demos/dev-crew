@@ -40,7 +40,7 @@
 		padding: 0.3em;
 		max-width: 1000px;
 		margin: 0 auto;
-		color: goldenrod;
+		color: red;
 		font-size: 1.8em;
 	}
 
