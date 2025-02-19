@@ -3,12 +3,13 @@
 
 <script>
     import Message from "./Message.svelte";
-    import { globalPosts } from './posts.svelte.js';
     
+    let posts = $state([]);
+
 
     let mes = $state('');
     let username = 'ballingkitten';
-    let num = $derived(globalPosts.posts.length);
+    let num = $derived(posts.length);
     let hasPosted = $state(false);
 
 
@@ -34,6 +35,12 @@
     //     buttonDisabled = !canPost(mes);
     // }
 
+    function refresh() {
+        for (let i = 0; i < posts.length; i++) {    
+            posts[i].id = i;
+        }
+    }
+
     function postTweet() {
 
         if (!hasPosted) {
@@ -41,16 +48,59 @@
         }
 
       
-        globalPosts.posts.splice(0,0, {id: num, username, text: mes })
+        posts.splice(0,0, {id: 0, username, text: mes })
         // num += 1;
 
         // Clear the input
         mes = '';
+
+
+        refresh();
+
+        
+        // for (let i = 0; i < posts.length; i++) {
+        //     console.log(posts[i].id);
+        // }
         
     }
 
 
 </script>
+
+
+<!-- Static elements like text input for tweets -->
+<input id="inputText" type="text" bind:value={mes} onkeydown={(e) => (e.keyCode == 13 ? postTweet(mes) : {})}/>
+
+<br />
+
+<span class={charColor}>{remainingChars}</span>
+
+<button id="post_tweet" onclick={postTweet} disabled={!buttonEnabled}>
+    Post Tweet
+</button>
+
+
+<!-- Posts listed here dynamically -->
+{#if hasPosted}
+    <div id="posts_header">POSTS</div>
+{/if}
+
+<div id="posts">
+    {#each posts as post}
+        <Message 
+        post = {post}
+        bind:posts = {posts}
+        />
+        
+    {/each}
+</div>
+
+
+
+
+
+
+
 
 <style>
     .belowCharMax {
@@ -135,29 +185,3 @@ button#post_tweet:hover:not(:disabled) {
 }
     
 </style>
-
-<!-- Static elements like text input for tweets -->
-<input id="inputText" type="text" bind:value={mes} onkeydown={(e) => (e.keyCode == 13 ? postTweet(mes) : {})}/>
-
-<br />
-
-<span class={charColor}>{remainingChars}</span>
-
-<button id="post_tweet" onclick={postTweet} disabled={!buttonEnabled}>
-    Post Tweet
-</button>
-
-
-<!-- Posts listed here dynamically -->
-{#if hasPosted}
-    <div id="posts_header">POSTS</div>
-{/if}
-
-<div id="posts">
-    {#each globalPosts.posts as post}
-        <Message 
-        post = {post}
-        />
-        
-    {/each}
-</div>

@@ -4,27 +4,39 @@
     import trash from '$lib/images/trash.png';
 
     // import global variable to change if user chooses to delete
-    import { globalPosts } from './posts.svelte.js';
+    //import { globalPosts } from './posts.svelte.js';
+
+    function refresh() {
+        for (let i = 0; i < posts.length; i++) {    
+            posts[i].id = i;
+        }
+    }
 
 
-    let {post} = $props();
+    let {post, posts} = $props();
+
+    
+
+
  
     function deletePost(id) {
 
         //console.log(id);
 
-        // decrement future posts' ids
-        // id values are stored in descending order due to prepending nature of posts
-        for (let i = id; i >= 0; i--) {
-            // console.log(i);
-            // console.log(globalPosts.posts[i].id)
-            if (globalPosts.posts[i].id > id) {
-                globalPosts.posts[i].id--;
-            }
-        }
+        // // decrement future posts' ids
+        // // id values are stored in descending order due to prepending nature of posts
+        // for (let i = id; i >= 0; i--) {
+        //     // console.log(i);
+        //     // console.log(globalPosts.posts[i].id)
+        //     if (posts[i].id > id) {
+        //         posts[i].id--;
+        //     }
+        // }
 
         // console.log(typeof id);
-        globalPosts.posts.splice(globalPosts.posts.length - id - 1, 1);
+       // console.log("Delete: " + id);
+        posts.splice(id, 1);
+        refresh();
     
     }
     
